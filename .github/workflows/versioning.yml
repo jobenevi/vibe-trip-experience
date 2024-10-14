@@ -1,15 +1,12 @@
-name: CI
+name: Versioning
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
+  version:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,29 +16,12 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.22.2
-
-    - name: Cache Go modules
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.cache/go-build
-          ~/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-go-
-
-    - name: Install dependencies
-      run: go mod download
-
-    - name: Run tests
-      run: go test ./... -v
+        go-version: 1.17
 
     - name: Bump version and create tag
-      if: github.ref == 'refs/heads/main'
       run: |
-        git config --global user.email "you@example.com"
-        git config --global user.name "Your Name"
+        git config --global user.email "jonatasmarques09@gmail.com"
+        git config --global user.name "jobenevi"
         git fetch --tags
         latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
         if [ -z "$latest_tag" ]; then
