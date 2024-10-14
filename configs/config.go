@@ -1,7 +1,7 @@
 package config
 
 import (
-	"log"
+	"errors"
 
 	"github.com/go-chi/jwtauth"
 	"github.com/spf13/viper"
@@ -31,12 +31,12 @@ func LoadConfig(path string) (*Config, error) {
 
 	err := viper.ReadInConfig()
 	if err != nil {
-		log.Printf("Error reading config file, %s", err)
+		return nil, errors.New("failed to read config file")
 	}
 
 	err = viper.Unmarshal(&config)
 	if err != nil {
-		panic(err)
+		return nil, errors.New("failed to unmarshal config")
 	}
 
 	config.JWTAuth = jwtauth.New("HS256", []byte(config.JWTSecret), nil)
