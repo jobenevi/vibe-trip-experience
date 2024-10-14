@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - develop
   pull_request:
     branches:
-      - main
+      - develop
 
 jobs:
   build:
@@ -37,19 +37,8 @@ jobs:
     - name: Run tests
       run: go test ./... -v
 
-    - name: Bump version and create tag
-      if: github.ref == 'refs/heads/main'
-      run: |
-        git config --global user.email "you@example.com"
-        git config --global user.name "Your Name"
-        git fetch --tags
-        latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-        if [ -z "$latest_tag" ]; then
-          new_tag="v0.1.0"
-        else
-          new_tag=$(echo $latest_tag | awk -F. -v OFS=. '{$NF++;print}')
-        fi
-        git tag $new_tag
-        git push origin $new_tag
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Run linter
+      run: go vet ./...
+
+    - name: Build
+      run: go build -v ./...
