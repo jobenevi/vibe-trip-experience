@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/jobenevi/vibe-trip-experience/database"
+	"github.com/jobenevi/vibe-trip-experience/internal/database"
 	"github.com/stretchr/testify/assert"
 )
 
